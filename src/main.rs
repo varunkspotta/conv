@@ -1,8 +1,16 @@
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
+#[command(
+    author,
+    version,
+    about,
+    long_about = "Takes a given number and shows its decimal,hex, and binary representations"
+)]
 struct Arg {
+    #[arg(
+        help = "Number to convert, prefix with 0x for hex number and 0b for binary, no prefix required for decimals"
+    )]
     number: String,
 }
 
@@ -23,7 +31,7 @@ fn as_binary(number: u32) -> String {
         .skip_while(|chunk| chunk == &[48, 48, 48, 48, 48, 48, 48, 48]) // 48 is '0' in ascii, we skip chunks that start with 00000000
         .map(|chunk| std::str::from_utf8(chunk).unwrap()) // convert ascii chunks to string refs
         .collect::<Vec<&str>>() // collect into a vector of string refs
-        .join(" ") // collect into final string, seperating each chunks of 8bits with a space
+        .join(" ") // collect into final string, seperating each chunk of 8bits with a space
 }
 
 fn main() {
